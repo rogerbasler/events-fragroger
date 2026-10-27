@@ -221,6 +221,7 @@ function layout({ title, desc, path, body, head = "", depth = 0, noindex = false
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="author" content="Roger Basler de Roca">
+<meta name="google-site-verification" content="Hqolcd30Hf_gfccGtFgbnX0KH6evMzyYWv4THczLgGU">
 <meta name="robots" content="${noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}">
 <link rel="canonical" href="${SITE}${path}">
 <link rel="alternate" hreflang="de-CH" href="${SITE}${path}">
