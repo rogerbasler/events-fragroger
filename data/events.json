@@ -175,15 +175,16 @@
     },
     {
       "date": "2026-11-12",
-      "time": null,
+      "time": "2026-11-12T18:00:00Z",
       "end": null,
       "format": "Keynote",
       "stadt": "St. Moritz",
       "land": "Schweiz",
       "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Keynote"
+      "public": true,
+      "title": "Praktische KI-Umsetzung im Betrieb, Herbstanlass 2026 des HGV St. Moritz",
+      "host": "HGV St. Moritz",
+      "link": "https://www.hgv-stmoritz.ch/aktuell"
     },
     {
       "date": "2026-11-13",
