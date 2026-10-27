@@ -1,11 +1,9 @@
-name: Events aus Notion (monatlich am 30.)
+name: Events aus Notion (Reserve, nur manuell)
 
+# Der reguläre Monatslauf am 30. ist ein geplanter Claude-Task, der Notion über den Connector liest
+# und das Ergebnis hierher pusht. Dieser Workflow ist die Reserve über die Notion API und braucht dafür
+# das Secret NOTION_TOKEN. Start: Actions > "Events aus Notion" > Run workflow.
 on:
-  schedule:
-    # Jeden Monat am 30. um 05:00 Zürich, im Februar am Monatsletzten.
-    # Cron kennt weder Zeitzonen noch Monatsenden, darum mehrere Trigger und eine Prüfung im ersten Schritt.
-    - cron: "0 3 28-30 * *"
-    - cron: "0 4 28-30 * *"
   workflow_dispatch:
 
 permissions:

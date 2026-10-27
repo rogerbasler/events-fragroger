@@ -361,13 +361,24 @@ function ics(events) {
 const todayZh = new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
 const BUILD_STAMP = todayZh.replace(/-/g, "");
 const args = process.argv.slice(2);
+// --fixture akzeptiert flache Datensätze oder direkt die Ausgabe der Notion-SQL-Abfrage
+// aus dem monatlichen Claude-Lauf ({"results":[{Titel,start,ende,Ort,kunde,Format,Sprache,Status,sicht,stadt,land,wtitel,branche,link}]}).
 const fx = args.indexOf("--fixture");
-const raw = fx >= 0 ? JSON.parse(await readFile(args[fx + 1], "utf8")) : await notionQuery(todayZh);
+function fromInput(j) {
+  const rows = Array.isArray(j) ? j : j.results;
+  if (!Array.isArray(rows)) throw new Error("Eingabedatei hat kein Array und kein results-Feld.");
+  return rows.map((r) => ("title" in r ? r : {
+    title: r.Titel, start: r.start ? String(r.start).replace(" ", "T") : null, end: r.ende || null, ort: r.Ort,
+    kunde: r.kunde, format: r.Format, sprache: r.Sprache, status: r.Status, sicht: r.sicht, stadt: r.stadt,
+    land: r.land, wtitel: r.wtitel, branche: r.branche, link: r.link,
+  }));
+}
+const raw = fx >= 0 ? fromInput(JSON.parse(await readFile(args[fx + 1], "utf8"))) : await notionQuery(todayZh);
 
 const events = dedupe(raw.map(normalize).filter(Boolean).filter((e) => (e.end || e.date) >= todayZh))
   .sort((a, b) => (a.time || a.date).localeCompare(b.time || b.date) || Number(b.public) - Number(a.public));
 
-if (!events.length && fx < 0) throw new Error("Notion lieferte keine Termine, Seite bleibt unverändert.");
+if (!events.length) throw new Error("Keine Termine gefunden, Seite bleibt unverändert.");
 
 const stamp = dLong.format(new Date());
 await mkdir(join(ROOT, "data"), { recursive: true });

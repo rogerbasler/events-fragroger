@@ -4,7 +4,8 @@ Kommende Auftritte von Roger Basler de Roca, automatisch aus der Notion-Datenban
 
 ## So funktioniert es
 
-- GitHub Actions baut die Seite jeden Monat am 30. um 05:00 Zürich (Februar: Monatsletzter). Manuell: Actions > "Events aus Notion" > Run workflow.
+- Ein geplanter Claude-Task läuft jeden Monat am 30. frühmorgens (Februar: Monatsletzter). Er liest die Notion-Datenbank über den Notion-Connector, baut die Seite mit `node scripts/build.mjs --fixture <abfrage.json>` und pusht nach `main`. Ein Notion-Token ist dafür nicht nötig.
+- Reserve: GitHub Actions > "Events aus Notion" > Run workflow (liest über die Notion API, braucht das Secret `NOTION_TOKEN`).
 - Angezeigt werden Einträge mit Status "Bestätigt" oder "In Vorbereitung" ab heute.
 - Steuerung pro Eintrag in Notion:
   - `Website: Sichtbarkeit`: Öffentlich = mit Titel und Veranstalter. Geschlossen oder leer = anonymisiert (nur Format, Datum, Stadt). Ausblenden = erscheint nicht.
@@ -15,10 +16,9 @@ Kommende Auftritte von Roger Basler de Roca, automatisch aus der Notion-Datenban
 
 ## Einrichtung (einmalig)
 
-1. Notion: unter notion.so/profile/integrations eine interne Integration "events.fragroger.ai" mit Leserecht anlegen, Token kopieren. Dann die Datenbank "🎤 Keynotes" öffnen > ••• > Verbindungen > Integration hinzufügen.
-2. GitHub: Settings > Secrets and variables > Actions > `NOTION_TOKEN` anlegen.
-3. GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/`. Custom domain `events.fragroger.ai`, HTTPS erzwingen.
-4. DNS bei fragroger.ai: CNAME `events` auf `rogerbasler.github.io`.
+1. GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/`. Custom domain `events.fragroger.ai`, HTTPS erzwingen.
+2. DNS bei fragroger.ai: CNAME `events` auf `rogerbasler.github.io`.
+3. Optional für die Reserve: Notion-Integration mit Leserecht anlegen, mit der Datenbank "🎤 Keynotes" verbinden, Token als Secret `NOTION_TOKEN` speichern.
 
 ## Lokal
 
