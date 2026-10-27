@@ -1,0 +1,60 @@
+name: Events aus Notion (monatlich am 30.)
+
+on:
+  schedule:
+    # Jeden Monat am 30. um 05:00 Zürich, im Februar am Monatsletzten.
+    # Cron kennt weder Zeitzonen noch Monatsenden, darum mehrere Trigger und eine Prüfung im ersten Schritt.
+    - cron: "0 3 28-30 * *"
+    - cron: "0 4 28-30 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: events-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Europe/Zurich
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+    steps:
+      - name: Zeitfenster prüfen
+        id: gate
+        run: |
+          run=false
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            run=true
+          elif [ "$(date +%H)" = "05" ]; then
+            day=$(date +%d); month=$(date +%m); tomorrow_month=$(date -d tomorrow +%m)
+            if [ "$day" = "30" ]; then run=true; fi
+            if [ "$month" = "02" ] && [ "$tomorrow_month" = "03" ]; then run=true; fi
+          fi
+          echo "Heute $(date), Lauf: $run"
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run == 'true'
+        with:
+          node-version: "22"
+
+      - name: Seite aus Notion bauen
+        if: steps.gate.outputs.run == 'true'
+        run: node scripts/build.mjs
+
+      - name: Veröffentlichen
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git config user.name "fragRoger Events Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Keine Änderungen."; exit 0; fi
+          git commit -m "Events aktualisiert $(date +%d.%m.%Y)"
+          git push
