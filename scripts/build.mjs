@@ -154,7 +154,7 @@ function card(e) {
   const meta = [e.public ? e.format : null, e.time ? `${tFmt.format(new Date(e.time))} Uhr` : null, e.lang ? `Sprache ${e.lang}` : null].filter(Boolean);
   const sub = e.public ? e.host : null;
   return `<li class="ev${e.public ? " is-public" : ""}" data-land="${esc(e.land || "")}" data-stadt="${esc(e.stadt || "")}" data-art="${e.public ? "oeffentlich" : "geschlossen"}">
-  <div class="ev-date" aria-hidden="true"><span class="ev-day">${dDay.format(d)}</span><span class="ev-wd">${dWd.format(d)}</span></div>
+  <time class="ev-date" datetime="${esc(e.time || e.date)}" aria-hidden="true"><span class="ev-day">${dDay.format(d)}</span><span class="ev-wd">${dWd.format(d)}</span></time>
   <div class="ev-body">
     <p class="ev-tags"><span class="tag ${e.public ? "tag-public" : "tag-closed"}">${e.public ? "Öffentlich" : "Geschlossen"}</span>${meta.map((m) => `<span class="tag">${esc(m)}</span>`).join("")}</p>
     <h3 class="ev-title">${esc(e.title)}</h3>
@@ -165,20 +165,53 @@ function card(e) {
 </li>`;
 }
 
-function jsonLd(events) {
-  const items = events.filter((e) => e.public).map((e) => ({
-    "@type": "Event", name: e.title, startDate: e.time || e.date, ...(e.end ? { endDate: e.end } : {}),
+// ---------- SEO / GEO ----------
+const PERSON_ID = "https://fragroger.ai/#roger";
+const COUNTRY = { Schweiz: "CH", Deutschland: "DE", Österreich: "AT" };
+const PERSON = {
+  "@type": "Person", "@id": PERSON_ID, name: "Roger Basler de Roca",
+  jobTitle: "KI-Berater, Keynote Speaker, Autor und Doktorand (kognitives Offloading)",
+  url: "https://fragroger.ai", image: `${SITE}/assets/og-image.png`,
+  worksFor: { "@type": "Organization", name: "Analytics Agentur", address: { "@type": "PostalAddress", streetAddress: "The Circle 6", postalCode: "8058", addressLocality: "Zürich", addressCountry: "CH" } },
+  knowsAbout: ["Künstliche Intelligenz", "KI im Unternehmen", "KI-Kompetenz", "Agentic AI", "Kognitives Offloading", "Digitale Souveränität", "EU AI Act"],
+  knowsLanguage: ["de", "en", "fr", "es"],
+  sameAs: ["https://www.linkedin.com/in/rogerbasler", "https://www.rogerbasler.ch", "https://fragroger.ai", "https://ki-power.me", "https://www.youtube.com/watch?v=nSkHqpvobD8"],
+};
+const FAQ = [
+  ["Wie kann ich Roger Basler de Roca für einen Anlass buchen?", "Anfragen für Keynotes, Impulsreferate und Workshops gehen per E-Mail an mail@rogerbasler.ch. Hilfreich sind Datum, Ort, Publikum, Dauer und Thema."],
+  ["Kann ich an den Veranstaltungen auf dieser Seite teilnehmen?", "Öffentliche Termine sind mit einem Link zur Anmeldung beim Veranstalter versehen. Geschlossene Termine sind interne Anlässe von Unternehmen, Verwaltungen oder Verbänden; dort zeigt die Seite nur Datum, Format und Ort."],
+  ["Zu welchen Themen spricht Roger Basler de Roca?", "Zu KI im Unternehmen und im Arbeitsalltag: KI-Kompetenz, Agentic AI, digitale Souveränität, EU AI Act und kognitives Offloading, also die Frage, wie Menschen mit KI arbeiten, ohne das eigene Denken abzugeben."],
+  ["In welchen Sprachen finden die Vorträge statt?", "Auf Deutsch, Englisch, Französisch und Spanisch. Die Sprache steht beim Termin, wenn sie nicht Deutsch ist."],
+  ["Wie aktuell ist die Liste?", "Die Termine werden jeden Monat am 30. aus der Terminplanung übernommen. Massgeblich sind die Angaben der Veranstalter."],
+];
+function jsonLd(events, stamp) {
+  const pub = events.filter((e) => e.public);
+  const evs = pub.map((e, i) => ({
+    "@type": "Event", "@id": `${SITE}/#event-${i + 1}`, name: e.title, startDate: e.time || e.date, ...(e.end ? { endDate: e.end } : {}),
+    description: [e.format, e.host ? `Veranstalter: ${e.host}` : null, `Mit Roger Basler de Roca`].filter(Boolean).join(". "),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: e.land === "Online" ? "https://schema.org/OnlineEventAttendanceMode" : "https://schema.org/OfflineEventAttendanceMode",
-    location: e.land === "Online" ? { "@type": "VirtualLocation", url: e.link || SITE } : { "@type": "Place", name: e.stadt || "", address: { "@type": "PostalAddress", addressLocality: e.stadt || "", addressCountry: e.land || "" } },
-    performer: { "@type": "Person", name: "Roger Basler de Roca", url: "https://fragroger.ai" },
-    ...(e.host ? { organizer: { "@type": "Organization", name: e.host } } : {}),
+    location: e.land === "Online" ? { "@type": "VirtualLocation", url: e.link || SITE } : { "@type": "Place", name: e.stadt || "", address: { "@type": "PostalAddress", addressLocality: e.stadt || "", addressCountry: COUNTRY[e.land] || e.land || "" } },
+    performer: { "@id": PERSON_ID },
+    ...(e.host ? { organizer: { "@type": "Organization", name: e.host, ...(e.link ? { url: e.link } : {}) } } : {}),
     ...(e.link ? { url: e.link } : {}),
+    inLanguage: (e.lang || "DE").toLowerCase(),
+    image: `${SITE}/assets/og-image.png`,
   }));
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": items }).replace(/</g, "\\u003c");
+  const graph = [
+    { "@type": "WebSite", "@id": `${SITE}/#website`, url: `${SITE}/`, name: "#fragRoger Events", inLanguage: "de-CH", publisher: { "@id": PERSON_ID } },
+    PERSON,
+    { "@type": "CollectionPage", "@id": `${SITE}/#webpage`, url: `${SITE}/`, name: "Events und Keynotes von Roger Basler de Roca", isPartOf: { "@id": `${SITE}/#website` }, about: { "@id": PERSON_ID }, inLanguage: "de-CH", dateModified: todayZh,
+      mainEntity: { "@type": "ItemList", numberOfItems: pub.length, itemListElement: evs.map((e, i) => ({ "@type": "ListItem", position: i + 1, item: { "@id": e["@id"] } })) } },
+    ...evs,
+    { "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: FAQ.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+  ];
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 }
 
-function layout({ title, desc, path, body, head = "", depth = 0 }) {
+const KIP = "https://ki-power.me/?utm_source=events.fragroger.ai&utm_medium=referral";
+
+function layout({ title, desc, path, body, head = "", depth = 0, noindex = false }) {
   const up = depth ? "../".repeat(depth) : "";
   return `<!DOCTYPE html>
 <html lang="de-CH">
@@ -187,21 +220,42 @@ function layout({ title, desc, path, body, head = "", depth = 0 }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
+<meta name="author" content="Roger Basler de Roca">
+<meta name="robots" content="${noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}">
 <link rel="canonical" href="${SITE}${path}">
+<link rel="alternate" hreflang="de-CH" href="${SITE}${path}">
+<link rel="alternate" hreflang="x-default" href="${SITE}${path}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="#fragRoger Events">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${path}">
 <meta property="og:locale" content="de_CH">
-<meta name="theme-color" content="#000000">
+<meta property="og:image" content="${SITE}/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="#fragRoger Events: Termine von Roger Basler de Roca">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:image" content="${SITE}/assets/og-image.png">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<link rel="icon" href="${up}favicon.ico" sizes="32x32">
 <link rel="icon" href="${up}assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="${up}assets/apple-touch-icon.png">
+<link rel="manifest" href="${up}site.webmanifest">
+<link rel="alternate" type="application/json" title="Termine als JSON" href="${SITE}/data/events.json">
+<link rel="alternate" type="text/calendar" title="Öffentliche Termine (iCal)" href="${SITE}/kalender.ics">
 <script>(function(){try{var t=localStorage.getItem('frev-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="${up}assets/style.css?v=${BUILD_STAMP}">
 ${head}
 </head>
 <body>
 <a class="skip" href="#main">Direkt zum Inhalt</a>
+<aside class="promo-top" aria-label="Hinweis KI Power">
+  <div class="wrap"><span class="promo-label">KI Power</span> Die KI-Academy für Selbstständige<span class="promo-long"> von Janet Zentel, Roger Basler de Roca und Fabian Zentel</span>: <a href="${KIP}&utm_campaign=topbar" rel="noopener">ki-power.me</a></div>
+</aside>
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="${up || "./"}" aria-label="fragRoger Events">
@@ -221,18 +275,32 @@ ${head}
 <main id="main" class="wrap">
 ${body}
 </main>
+<aside class="wrap promo-bottom" aria-label="Empfehlung KI Power">
+  <div class="promo-card">
+    <p class="promo-kicker">Weiterlernen nach dem Vortrag</p>
+    <p class="promo-title">KI Power: Mach KI zu deiner Sichtbarkeitsmaschine</p>
+    <p class="promo-text">Online-Academy für Selbstständige und Coaches: Angebot, Content und Kundengewinnung mit KI aufbauen, mit monatlichen Live-Terminen und Aufzeichnung.</p>
+    <a class="promo-btn" href="${KIP}&utm_campaign=footer" rel="noopener">ki-power.me ansehen</a>
+  </div>
+</aside>
 <footer class="site-footer">
   <div class="wrap">
     <p class="foot-brand"><span class="brand-hash">#</span>frag<span class="brand-blue">Roger</span></p>
     <p class="foot-line">Keynotes, Impulse und Workshops zu KI von Roger Basler de Roca.</p>
-    <p class="foot-small">Für Anfragen: <a href="mailto:mail@rogerbasler.ch">mail@rogerbasler.ch</a></p>
+    <p class="foot-small">Für Anfragen: <a href="mailto:mail@rogerbasler.ch">mail@rogerbasler.ch</a> · Mehr: <a href="https://fragroger.ai" rel="noopener">fragroger.ai</a> · <a href="https://www.linkedin.com/in/rogerbasler" rel="noopener me">LinkedIn</a> · <a href="${KIP}&utm_campaign=footerlink" rel="noopener">KI Power</a></p>
     <div class="foot-bottom">
       <p>© ${new Date().getFullYear()} Roger Basler de Roca, Analytics Agentur, Zürich</p>
-      <nav class="foot-nav" aria-label="Rechtliches"><a href="${up}impressum/">Impressum</a><a href="${up}kalender.ics">Kalender abonnieren</a></nav>
+      <nav class="foot-nav" aria-label="Rechtliches"><a href="${up}impressum/">Impressum</a><a href="${up}datenschutz/">Datenschutz</a><a href="${up}kalender.ics">Kalender abonnieren</a></nav>
     </div>
   </div>
 </footer>
-<script>(function(){var b=document.getElementById('theme-toggle');if(!b)return;b.addEventListener('click',function(){var n=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('frev-theme',n);}catch(e){}});})();</script>
+<div class="consent" id="consent" role="region" aria-label="Hinweis zu Cookies" hidden>
+  <p>Diese Seite setzt keine Cookies und kein Tracking ein. Lokal im Browser gespeichert werden nur Ihre Wahl hell oder dunkel und dieser Hinweis. <a href="${up}datenschutz/">Datenschutz</a></p>
+  <button type="button" id="consent-ok">Verstanden</button>
+</div>
+<script>(function(){var b=document.getElementById('theme-toggle');if(b){b.addEventListener('click',function(){var n=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('frev-theme',n);}catch(e){}});}
+var c=document.getElementById('consent'),seen=false;try{seen=localStorage.getItem('frev-consent')==='1';}catch(e){}
+if(c&&!seen){c.hidden=false;document.getElementById('consent-ok').addEventListener('click',function(){c.hidden=true;try{localStorage.setItem('frev-consent','1');}catch(e){}});}})();</script>
 </body>
 </html>
 `;
@@ -254,8 +322,8 @@ function indexPage(events, stamp) {
 <section class="hero">
   <p class="kicker">Kommende Termine</p>
   <h1 class="hero-title">Wo Roger Basler de Roca als Nächstes über KI spricht</h1>
-  <p class="lead">${events.length} Termine, davon ${nPublic} öffentlich. Bei geschlossenen Veranstaltungen zeigen wir nur Format und Ort, nicht die Organisation.</p>
-  <p class="stamp">Stand: ${esc(stamp)} · Die Liste wird jeden Monat am 30. aktualisiert.</p>
+  <p class="lead">Keynotes, Impulsreferate und Workshops zu künstlicher Intelligenz in der Schweiz, in Deutschland und online: ${events.length} Termine, davon ${nPublic} öffentlich mit Anmeldung. Bei geschlossenen Veranstaltungen zeigen wir nur Format und Ort, nicht die Organisation.</p>
+  <p class="stamp">Stand: <time datetime="${todayZh}">${esc(stamp)}</time> · Die Liste wird jeden Monat am 30. aktualisiert.</p>
 </section>
 
 <section class="filters" aria-label="Filter" hidden>
@@ -289,6 +357,17 @@ ${m.items.map(card).join("\n")}
   <p>Keynote, Impulsreferat oder Workshop zu KI im Unternehmen: Anfragen gerne per <a href="mailto:mail@rogerbasler.ch?subject=Anfrage%20Event">E-Mail</a>.</p>
 </section>
 
+<section class="about prose" aria-labelledby="about-title">
+  <h2 id="about-title">Über Roger Basler de Roca</h2>
+  <p>Roger Basler de Roca ist KI-Berater, Keynote Speaker und Autor aus Zürich. Er hält über 100 Vorträge pro Jahr und begleitet mehr als 60 Unternehmen bei der Einführung von KI. Er doziert an der ZHAW, der HWZ und der FHNW und forscht als Doktorand zum kognitiven Offloading: wie Menschen mit KI arbeiten, ohne das eigene Denken abzugeben. Er spricht auf Deutsch, Englisch, Französisch und Spanisch.</p>
+  <p>Sein Leitsatz: "Künstlich ist die Maschine. Intelligenz muss vom Menschen kommen." Mehr unter <a href="https://fragroger.ai" rel="noopener">fragroger.ai</a> und <a href="https://www.linkedin.com/in/rogerbasler" rel="noopener me">LinkedIn</a>.</p>
+</section>
+
+<section class="faq prose" aria-labelledby="faq-title">
+  <h2 id="faq-title">Häufige Fragen</h2>
+${FAQ.map(([q, a]) => `  <details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("\n")}
+</section>
+
 <script>
 (function(){
   var f={art:'',land:'',stadt:''};
@@ -314,12 +393,14 @@ ${m.items.map(card).join("\n")}
   apply();
 })();
 </script>`;
+  const years = [...new Set(events.map((e) => e.date.slice(0, 4)))];
+  const yr = years.length > 1 ? `${years[0]}/${years.at(-1).slice(2)}` : years[0];
   return layout({
-    title: "Events · Roger Basler de Roca · #fragRoger",
-    desc: "Kommende Keynotes, Impulsreferate und Workshops von Roger Basler de Roca zu KI, filterbar nach Ort und nach öffentlich oder geschlossen.",
+    title: `Events und Keynotes ${yr}: Roger Basler de Roca zu KI | #fragRoger`,
+    desc: `Alle kommenden Keynotes, Impulsreferate und Workshops von Roger Basler de Roca zu KI, mit ${nPublic} öffentlichen Terminen und Anmeldung. Filter nach Ort, Region und Art.`,
     path: "/",
     body,
-    head: `<script type="application/ld+json">${jsonLd(events)}</script>`,
+    head: `<script type="application/ld+json">${jsonLd(events, stamp)}</script>`,
   });
 }
 
@@ -335,10 +416,66 @@ function impressumPage() {
 <p>Eine Übersicht der kommenden Auftritte von Roger Basler de Roca. Die Liste wird monatlich automatisch aus der eigenen Terminplanung erzeugt. Bei geschlossenen Veranstaltungen werden weder Organisation noch Adresse veröffentlicht.</p>
 <h2>Haftungsausschluss</h2>
 <p>Termine können sich verschieben. Massgeblich sind die Angaben der jeweiligen Veranstalter. Für verlinkte Seiten sind ausschliesslich deren Betreiber verantwortlich.</p>
-<h2>Datenschutz</h2>
-<p>Diese Seite setzt keine Cookies und kein Tracking ein. Die gewählte Darstellung (hell oder dunkel) wird nur lokal im Browser gespeichert. Gehostet wird die Seite über GitHub Pages.</p>
+<h2>Werbung</h2>
+<p>Die Hinweise auf KI Power (ki-power.me) sind Eigenwerbung: Roger Basler de Roca ist Mitgründer von KI Power.</p>
+<p>Zum Datenschutz siehe die <a href="../datenschutz/">Datenschutzerklärung</a>.</p>
 </section>`,
   });
+}
+
+function datenschutzPage() {
+  return layout({
+    title: "Datenschutz · #fragRoger Events", desc: "Datenschutzerklärung von events.fragroger.ai: keine Cookies, kein Tracking.", path: "/datenschutz/", depth: 1,
+    body: `<section class="hero small"><h1 class="hero-title">Datenschutz</h1></section>
+<section class="prose">
+<h2>Verantwortlich</h2>
+<p>Roger Basler de Roca, Analytics Agentur, The Circle 6, 8058 Zürich, Schweiz. E-Mail: <a href="mailto:mail@rogerbasler.ch">mail@rogerbasler.ch</a></p>
+<h2>Cookies und Tracking</h2>
+<p>Diese Seite setzt keine Cookies, keine Analyse- oder Werbe-Tracker und keine eingebetteten Inhalte von Dritten ein. Schriften und Skripte werden direkt von dieser Seite geladen.</p>
+<h2>Lokale Speicherung im Browser</h2>
+<p>Im lokalen Speicher Ihres Browsers (localStorage) werden zwei Einstellungen abgelegt: Ihre Wahl der Darstellung (hell oder dunkel) und dass Sie den Hinweis zu Cookies gesehen haben. Diese Angaben verlassen Ihr Gerät nicht. Sie können sie jederzeit in den Browsereinstellungen löschen.</p>
+<h2>Hosting</h2>
+<p>Die Seite wird über GitHub Pages (GitHub Inc., USA) ausgeliefert. Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie die IP-Adresse, um die Seite auszuliefern und vor Missbrauch zu schützen. Details stehen in der Datenschutzerklärung von GitHub.</p>
+<h2>Links zu anderen Seiten</h2>
+<p>Links zu Veranstaltern und zu KI Power führen auf Seiten Dritter. Dort gelten deren Datenschutzbestimmungen. Die Links zu KI Power enthalten Kampagnenparameter (utm), damit KI Power erkennt, dass Sie von dieser Seite kommen. Diese Seite selbst wertet nichts aus.</p>
+<h2>Ihre Rechte</h2>
+<p>Nach dem Schweizer Datenschutzgesetz (DSG) und, soweit anwendbar, der DSGVO können Sie Auskunft, Berichtigung oder Löschung verlangen. Schreiben Sie dazu an die oben genannte Adresse.</p>
+<p class="stamp">Stand: ${esc(dLong.format(new Date()))}</p>
+</section>`,
+  });
+}
+
+function notFoundPage() {
+  return layout({
+    title: "Seite nicht gefunden · #fragRoger Events", desc: "Diese Seite gibt es nicht.", path: "/404.html", noindex: true,
+    body: `<section class="hero small"><h1 class="hero-title">Seite nicht gefunden</h1><p class="lead"><a href="/">Zu den kommenden Terminen</a></p></section>`,
+  }).replaceAll('href="assets/', 'href="/assets/').replaceAll('href="favicon', 'href="/favicon').replaceAll('href="site.web', 'href="/site.web').replaceAll('href="impressum/', 'href="/impressum/').replaceAll('href="datenschutz/', 'href="/datenschutz/').replaceAll('href="kalender', 'href="/kalender').replaceAll('href="./"', 'href="/"');
+}
+
+function sitemap(events) {
+  const urls = [["/", "weekly", "1.0"], ["/impressum/", "yearly", "0.2"], ["/datenschutz/", "yearly", "0.2"]];
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([p, f, pr]) => `  <url><loc>${SITE}${p}</loc><lastmod>${todayZh}</lastmod><changefreq>${f}</changefreq><priority>${pr}</priority></url>`).join("\n")}\n</urlset>\n`;
+}
+
+function llms(events, stamp) {
+  const pub = events.filter((e) => e.public);
+  const d = (e) => new Intl.DateTimeFormat("de-CH", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(asDate(e.date));
+  return `# #fragRoger Events: Termine von Roger Basler de Roca
+
+> Übersicht der kommenden Keynotes, Impulsreferate und Workshops von Roger Basler de Roca (KI-Berater, Keynote Speaker, Autor, Zürich) zum Thema künstliche Intelligenz. Stand: ${stamp}. Monatlich am 30. aktualisiert.
+
+Roger Basler de Roca hält über 100 Vorträge pro Jahr, begleitet mehr als 60 Unternehmen bei der KI-Einführung, doziert an ZHAW, HWZ und FHNW und forscht als Doktorand zum kognitiven Offloading. Sprachen: Deutsch, Englisch, Französisch, Spanisch. Buchung: mail@rogerbasler.ch. Website: https://fragroger.ai
+
+## Öffentliche Termine
+
+${pub.map((e) => `- ${d(e)}, ${e.stadt || "Ort offen"}: ${e.title}${e.host ? ` (Veranstalter: ${e.host})` : ""}${e.link ? `. Anmeldung: ${e.link}` : ""}`).join("\n")}
+
+## Hinweise
+
+- Insgesamt ${events.length} Termine, davon ${events.length - pub.length} geschlossene Anlässe von Unternehmen, Verwaltungen und Verbänden (ohne Angabe der Organisation).
+- Maschinenlesbar: ${SITE}/data/events.json und ${SITE}/kalender.ics
+- KI Power (https://ki-power.me), die KI-Academy für Selbstständige, ist ein Angebot, das Roger Basler de Roca mitgegründet hat.
+`;
 }
 
 function ics(events) {
@@ -386,5 +523,11 @@ await mkdir(join(ROOT, "impressum"), { recursive: true });
 await writeFile(join(ROOT, "data/events.json"), JSON.stringify({ updated: todayZh, events }, null, 2) + "\n");
 await writeFile(join(ROOT, "index.html"), indexPage(events, stamp));
 await writeFile(join(ROOT, "impressum/index.html"), impressumPage());
+await mkdir(join(ROOT, "datenschutz"), { recursive: true });
+await writeFile(join(ROOT, "datenschutz/index.html"), datenschutzPage());
+await writeFile(join(ROOT, "404.html"), notFoundPage());
+await writeFile(join(ROOT, "sitemap.xml"), sitemap(events));
+await writeFile(join(ROOT, "llms.txt"), llms(events, stamp));
+await writeFile(join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 await writeFile(join(ROOT, "kalender.ics"), ics(events));
 console.log(`${events.length} Termine geschrieben (${events.filter((e) => e.public).length} öffentlich), Stand ${todayZh}.`);

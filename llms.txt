@@ -1,0 +1,28 @@
+# #fragRoger Events: Termine von Roger Basler de Roca
+
+> Übersicht der kommenden Keynotes, Impulsreferate und Workshops von Roger Basler de Roca (KI-Berater, Keynote Speaker, Autor, Zürich) zum Thema künstliche Intelligenz. Stand: 27. Oktober 2026. Monatlich am 30. aktualisiert.
+
+Roger Basler de Roca hält über 100 Vorträge pro Jahr, begleitet mehr als 60 Unternehmen bei der KI-Einführung, doziert an ZHAW, HWZ und FHNW und forscht als Doktorand zum kognitiven Offloading. Sprachen: Deutsch, Englisch, Französisch, Spanisch. Buchung: mail@rogerbasler.ch. Website: https://fragroger.ai
+
+## Öffentliche Termine
+
+- 29.10.2026, Uzwil: Denken ist wie ChatGPT, nur krasser: Wie wir das digitale Zeitalter überleben, ohne unseren Kopf zu verlieren (ausgebucht) (Veranstalter: Institut für Jungunternehmen & startup space). Anmeldung: https://www.ifj.ch/index.cfm?page=136020&event_id=13027
+- 02.11.2026, Lachen SZ: KI-Kurs bei Pro Senectute. Anmeldung: https://sz.prosenectute.ch/de/freizeit/kurse.html
+- 10.11.2026, Online: KI in der Erwachsenenbildung, Kurs beim KV Luzern (Veranstalter: KV Luzern). Anmeldung: https://www.kvlu.ch/berufsakademie/bildungsangebot/kuenstliche-intelligenz-in-der-aus-und-weiterbildung
+- 11.11.2026, Frankfurt am Main: Opening Keynote "AI Shocks Tax", Tax Technology Conference 2026 (Veranstalter: Verlag Dr. Otto Schmidt KG). Anmeldung: https://www.tax-technology-conference.de/
+- 12.11.2026, St. Moritz: Praktische KI-Umsetzung im Betrieb, Herbstanlass 2026 des HGV St. Moritz (Veranstalter: HGV St. Moritz). Anmeldung: https://www.hgv-stmoritz.ch/aktuell
+- 13.11.2026, Zürich: Praxisseminar KI für KMU der Zürcher Kantonalbank (ausgebucht). Anmeldung: https://www.zkb.ch/de/unternehmen/kmu-wissen/angebote/praxisseminar-ki-fuer-kmu.html
+- 17.11.2026, Zürich: Keynote am Fund Summit Zurich 2026 (Veranstalter: Clearstream Fund Centre). Anmeldung: https://fundsummit-zurich-2026.deutsche-boerse-events.com/
+- 24.11.2026, Bern: Keynote am BESA QSys Symposium (Veranstalter: BESA QSys AG). Anmeldung: https://besaqsys.ch/de/node/579
+- 25.11.2026, Online: Canva für dein Business und Marketing, kostenloser Live-Workshop mit Janet Zentel (Veranstalter: KI Power). Anmeldung: https://ki-power.me/canva-workshop
+- 04.12.2026, St.Gallen: Schlusskeynote KI-Paradox, OKB-Symposium 2026 (Veranstalter: OKB Ostschweizer Kompetenzzentrum für Berufsbildung). Anmeldung: https://www.berufsbildung-ost.ch/
+- 23.02.2027, Lachen SZ: KI-Einstiegskurs bei Pro Senectute (Veranstalter: Pro Senectute Kanton Schwyz). Anmeldung: https://sz.prosenectute.ch/de/freizeit/kurse.html
+- 27.04.2027, Lachen SZ: KI-Einstiegskurs bei Pro Senectute (Veranstalter: Pro Senectute Kanton Schwyz). Anmeldung: https://sz.prosenectute.ch/de/freizeit/kurse.html
+- 01.06.2027, Lachen SZ: KI-Folgekurs bei Pro Senectute (Veranstalter: Pro Senectute Kanton Schwyz). Anmeldung: https://sz.prosenectute.ch/de/freizeit/kurse.html
+- 29.06.2027, Lachen SZ: KI-Folgekurs bei Pro Senectute (Veranstalter: Pro Senectute Kanton Schwyz). Anmeldung: https://sz.prosenectute.ch/de/freizeit/kurse.html
+
+## Hinweise
+
+- Insgesamt 50 Termine, davon 36 geschlossene Anlässe von Unternehmen, Verwaltungen und Verbänden (ohne Angabe der Organisation).
+- Maschinenlesbar: https://events.fragroger.ai/data/events.json und https://events.fragroger.ai/kalender.ics
+- KI Power (https://ki-power.me), die KI-Academy für Selbstständige, ist ein Angebot, das Roger Basler de Roca mitgegründet hat.

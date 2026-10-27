@@ -20,6 +20,14 @@ Kommende Auftritte von Roger Basler de Roca, automatisch aus der Notion-Datenban
 2. DNS bei fragroger.ai: CNAME `events` auf `rogerbasler.github.io`.
 3. Optional für die Reserve: Notion-Integration mit Leserecht anlegen, mit der Datenbank "🎤 Keynotes" verbinden, Token als Secret `NOTION_TOKEN` speichern.
 
+## Icons und Social-Bild
+
+`python3 scripts/make_icons.py` erzeugt favicon.ico, assets/favicon.svg, App-Icons und assets/og-image.png neu (nur bei Designänderungen nötig).
+
+## SEO und GEO
+
+Das Build-Skript schreibt neben index.html auch sitemap.xml, robots.txt, llms.txt (Kurzfassung für KI-Suchsysteme), 404.html, datenschutz/ und impressum/. Strukturierte Daten: WebSite, Person, CollectionPage mit ItemList, Event pro öffentlichem Termin, FAQPage.
+
 ## Lokal
 
 ```
