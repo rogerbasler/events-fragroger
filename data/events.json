@@ -5,18 +5,6 @@
       "date": "2026-11-12",
       "time": null,
       "end": null,
-      "format": "Workshop",
-      "stadt": "Uster",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-12",
-      "time": "2026-11-12T18:00:00Z",
-      "end": null,
       "format": "Keynote",
       "stadt": "St. Moritz",
       "land": "Schweiz",
@@ -25,6 +13,18 @@
       "title": "Praktische KI-Umsetzung im Betrieb, Herbstanlass 2026 des HGV St. Moritz",
       "host": "HGV St. Moritz",
       "link": "https://www.hgv-stmoritz.ch/aktuell"
+    },
+    {
+      "date": "2026-11-12",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Uster",
+      "land": "Schweiz",
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
     },
     {
       "date": "2026-11-13",
@@ -166,18 +166,6 @@
       "time": null,
       "end": null,
       "format": "Workshop",
-      "stadt": "Appenzell",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-25",
-      "time": "2026-11-25T17:30:00Z",
-      "end": null,
-      "format": "Workshop",
       "stadt": "Online",
       "land": "Online",
       "lang": null,
@@ -185,6 +173,18 @@
       "title": "Canva für dein Business und Marketing, kostenloser Live-Workshop mit Janet Zentel",
       "host": "KI Power",
       "link": "https://ki-power.me/canva-workshop"
+    },
+    {
+      "date": "2026-11-25",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Appenzell",
+      "land": "Schweiz",
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
     },
     {
       "date": "2026-11-26",
@@ -309,7 +309,7 @@
     },
     {
       "date": "2026-12-04",
-      "time": "2026-12-04T17:00:00Z",
+      "time": null,
       "end": null,
       "format": "Workshop",
       "stadt": "Online",
@@ -358,7 +358,7 @@
     },
     {
       "date": "2027-01-18",
-      "time": "2027-01-18T17:00:00Z",
+      "time": null,
       "end": null,
       "format": "Impulsreferat",
       "stadt": "Thurgau",
