@@ -151,14 +151,16 @@ const asDate = (iso) => new Date(`${iso}T12:00:00Z`);
 function card(e) {
   const d = asDate(e.date);
   const where = e.stadt || "Ort auf Anfrage";
-  const meta = [e.public ? e.format : null, e.time ? `${tFmt.format(new Date(e.time))} Uhr` : null, e.lang ? `Sprache ${e.lang}` : null].filter(Boolean);
-  const sub = e.public ? e.host : null;
+  // Keine Uhrzeit auf der Karte: massgeblich sind die Angaben des Veranstalters hinter dem Link.
+  const meta = [e.public ? e.format : null, e.lang ? `Sprache ${e.lang}` : null].filter(Boolean);
+  const isKiPower = e.public && e.host && /ki power/i.test(e.host);
+  const sub = e.public ? (isKiPower ? `<a href="${esc(`${KIP}&utm_campaign=event`)}" rel="noopener">${esc(e.host)}</a>` : esc(e.host)) : null;
   return `<li class="ev${e.public ? " is-public" : ""}" data-land="${esc(e.land || "")}" data-stadt="${esc(e.stadt || "")}" data-art="${e.public ? "oeffentlich" : "geschlossen"}">
   <time class="ev-date" datetime="${esc(e.time || e.date)}" aria-hidden="true"><span class="ev-day">${dDay.format(d)}</span><span class="ev-wd">${dWd.format(d)}</span></time>
   <div class="ev-body">
     <p class="ev-tags"><span class="tag ${e.public ? "tag-public" : "tag-closed"}">${e.public ? "Öffentlich" : "Geschlossen"}</span>${meta.map((m) => `<span class="tag">${esc(m)}</span>`).join("")}</p>
     <h3 class="ev-title">${esc(e.title)}</h3>
-    ${sub ? `<p class="ev-sub">${esc(sub)}</p>` : ""}
+    ${sub ? `<p class="ev-sub">${sub}</p>` : ""}
     <p class="ev-where"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="sr-only">${dLong.format(d)}, </span>${esc(where)}${e.land && e.land !== "Online" && e.land !== "Schweiz" ? `, ${esc(e.land)}` : ""}</p>
     ${e.public && e.link ? `<p class="ev-cta"><a href="${esc(e.link)}" rel="noopener">Infos und Anmeldung</a></p>` : ""}
   </div>
