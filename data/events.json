@@ -1,166 +1,6 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-11-12",
   "events": [
-    {
-      "date": "2026-10-27",
-      "time": "2026-10-27T11:00:00Z",
-      "end": null,
-      "format": "Interview",
-      "stadt": null,
-      "land": null,
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Interview"
-    },
-    {
-      "date": "2026-10-29",
-      "time": null,
-      "end": null,
-      "format": "Impulsreferat",
-      "stadt": "Uzwil",
-      "land": "Schweiz",
-      "lang": null,
-      "public": true,
-      "title": "Denken ist wie ChatGPT, nur krasser: Wie wir das digitale Zeitalter überleben, ohne unseren Kopf zu verlieren (ausgebucht)",
-      "host": "Institut für Jungunternehmen & startup space",
-      "link": "https://www.ifj.ch/index.cfm?page=136020&event_id=13027"
-    },
-    {
-      "date": "2026-10-29",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Appenzell",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-02",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Lachen SZ",
-      "land": "Schweiz",
-      "lang": null,
-      "public": true,
-      "title": "KI-Kurs bei Pro Senectute",
-      "host": null,
-      "link": "https://sz.prosenectute.ch/de/freizeit/kurse.html"
-    },
-    {
-      "date": "2026-11-04",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Appenzell",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-05",
-      "time": null,
-      "end": null,
-      "format": "Keynote",
-      "stadt": "Zürich",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Keynote"
-    },
-    {
-      "date": "2026-11-06",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Winterthur",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-06",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Zürich",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-07",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": null,
-      "land": null,
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Workshop"
-    },
-    {
-      "date": "2026-11-09",
-      "time": null,
-      "end": null,
-      "format": "Impulsreferat",
-      "stadt": "Baden",
-      "land": "Schweiz",
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Impulsreferat"
-    },
-    {
-      "date": "2026-11-10",
-      "time": null,
-      "end": null,
-      "format": "Workshop",
-      "stadt": "Online",
-      "land": "Online",
-      "lang": null,
-      "public": true,
-      "title": "KI in der Erwachsenenbildung, Kurs beim KV Luzern",
-      "host": "KV Luzern",
-      "link": "https://www.kvlu.ch/berufsakademie/bildungsangebot/kuenstliche-intelligenz-in-der-aus-und-weiterbildung"
-    },
-    {
-      "date": "2026-11-10",
-      "time": null,
-      "end": null,
-      "format": "Keynote",
-      "stadt": null,
-      "land": null,
-      "lang": null,
-      "public": false,
-      "branche": null,
-      "title": "Keynote"
-    },
-    {
-      "date": "2026-11-11",
-      "time": null,
-      "end": null,
-      "format": "Keynote",
-      "stadt": "Frankfurt am Main",
-      "land": "Deutschland",
-      "lang": null,
-      "public": true,
-      "title": "Opening Keynote \"AI Shocks Tax\", Tax Technology Conference 2026",
-      "host": "Verlag Dr. Otto Schmidt KG",
-      "link": "https://www.tax-technology-conference.de/"
-    },
     {
       "date": "2026-11-12",
       "time": null,
@@ -419,6 +259,18 @@
       "title": "Workshop"
     },
     {
+      "date": "2026-11-30",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": null,
+      "land": null,
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
       "date": "2026-12-02",
       "time": null,
       "end": null,
@@ -454,6 +306,19 @@
       "title": "Schlusskeynote KI-Paradox, OKB-Symposium 2026",
       "host": "OKB Ostschweizer Kompetenzzentrum für Berufsbildung",
       "link": "https://www.berufsbildung-ost.ch/"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "2026-12-04T17:00:00Z",
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Online",
+      "land": "Online",
+      "lang": null,
+      "public": true,
+      "title": "Business-Strategie 2027 mit KI umsetzen, kostenloser Live-Workshop mit Janet Zentel",
+      "host": "KI Power",
+      "link": "https://ki-power.me/strategie-2027"
     },
     {
       "date": "2026-12-05",
@@ -516,6 +381,18 @@
       "title": "Workshop"
     },
     {
+      "date": "2027-01-29",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": null,
+      "land": null,
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
       "date": "2027-02-10",
       "time": null,
       "end": null,
@@ -565,6 +442,18 @@
       "title": "Workshop"
     },
     {
+      "date": "2027-03-10",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Brunnen",
+      "land": "Schweiz",
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
       "date": "2027-04-27",
       "time": null,
       "end": null,
@@ -578,11 +467,47 @@
       "link": "https://sz.prosenectute.ch/de/freizeit/kurse.html"
     },
     {
+      "date": "2027-04-28",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Brunnen",
+      "land": "Schweiz",
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
       "date": "2027-04-30",
       "time": null,
       "end": null,
       "format": "Workshop",
       "stadt": "Basel",
+      "land": "Schweiz",
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
+      "date": "2027-05-25",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": null,
+      "land": null,
+      "lang": null,
+      "public": false,
+      "branche": null,
+      "title": "Workshop"
+    },
+    {
+      "date": "2027-05-26",
+      "time": null,
+      "end": null,
+      "format": "Workshop",
+      "stadt": "Brunnen",
       "land": "Schweiz",
       "lang": null,
       "public": false,
